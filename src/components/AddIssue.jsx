@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {  Container, Form ,Row ,Col, Button} from "react-bootstrap";
-
+import { v4 as uuidv4 } from 'uuid';
 const defaultIssue={
     title:"",
     subTitle:"",
@@ -32,7 +32,7 @@ const [errors ,setErrors] =useState({
        })
     }
     const handelSubmit=(evt)=>{
-    const {title ,subTitle ,assignedTo ,startDate,endDate ,status} = issue
+    const {title ,subTitle  ,assignedTo,startDate,endDate } = issue
         evt.preventDefault()
         //check error
         if(title === ""){
@@ -41,43 +41,50 @@ const [errors ,setErrors] =useState({
                 title:" title is required"
             }))
         }
-        if(subTitle === ""){
-            setErrors((prevErr)=>({
-                ...prevErr,
-                subTitle:" subtitle is required"
-            }))
-        }
+
         if(assignedTo === ""){
             setErrors((prevErr)=>({
                 ...prevErr,
                 assignedTo:" assignedTo is required"
             }))
         }
+
+        if(subTitle === ""){
+            setErrors((prevErr)=>({
+                ...prevErr,
+                subTitle:" subtitle is required"
+            }))
+        }
+        
         if(startDate === ""){
             setErrors((prevErr)=>({
                 ...prevErr,
-                startDate:" assignedTo is required"
+                startDate:" startDate is required"
             }))
         }
         if(endDate === ""){
             setErrors((prevErr)=>({
                 ...prevErr,
-                endDate:" assignedTo is required"
+                endDate:" endDate is required"
             }))
         }
     }
-    //return every elememnt true otherwise false
+    //return every element true otherwise false
     const isValid = Object.values(issue).every(elm => elm)
 
     if(isValid){
         // is true then form submitted
-        addIssue(issue)
+        addIssue({
+            id: uuidv4(),
+            ...issue
+        })
+        //console.log(issue)
         //form cleared
         setIssue(defaultIssue)
     }
-    const {title ,subTitle  ,startDate,endDate ,priority,status,completedPercentage ,assignedTo} = issue
+    const {title ,subTitle  ,startDate,endDate ,priority,status,completedPercentage ,assignedTo } = issue
     const {title:errorTitle ,subTitle:errorSubTitle ,
-        assignedTo:errorAssignedTo,
+        assignedTo:errorAssignTo,
         startDate:errorStartDate ,
         endDate:errorEndDate
     } = errors 
@@ -106,19 +113,39 @@ const [errors ,setErrors] =useState({
                         {errorTitle}
                     </Form.Control.Feedback>
                 </Form.Group>
+
+
+                <Form.Group  className="mb-3">
+                    <Form.Label>assignedTo </Form.Label>
+                    <Form.Control 
+                     type='text'
+                     id="assignedTo"
+                     name="assignedTo"
+                     onChange={handelChange}
+                     value={assignedTo}
+                     placeholder ='enter your task name'
+                     isInvalid = {errorAssignTo}
+                     />
+                    <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
+                        {errorAssignTo}
+                    </Form.Control.Feedback>
+                </Form.Group>
+
+
+
                 <Form.Group  className="mb-3">
                     <Form.Label>Message </Form.Label>
                     <Form.Control as="textarea" 
-                     //type="text"
+                  
                      name="subTitle"
                      onChange={handelChange}
                      value={subTitle}
                      id='subTitle'
                      placeholder ='enter your task Details'
-                     isInvalid = {errorAssignedTo}
+                     isInvalid = {errorSubTitle}
                      />
                    <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
-                        {errorAssignedTo}
+                        {errorSubTitle}
                     </Form.Control.Feedback>
                 </Form.Group>
 
@@ -133,6 +160,7 @@ const [errors ,setErrors] =useState({
                     name="startDate"
                     placeholder='enter start Date'
                     isInvalid={errorStartDate}
+                 
                     />
                     <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
                         {errorStartDate}
@@ -149,26 +177,29 @@ const [errors ,setErrors] =useState({
                     name="endDate"
                     placeholder='enter end Date'
                     isInvalid={errorEndDate}
+                    
                     />
                     <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
                         {errorEndDate}
                     </Form.Control.Feedback>
-                </Form.Group>
+                </Form.Group> 
                 </Col>
                
               
                </Row>
-               <Row className="">
+               <Row >
                <Form.Label htmlFor="priority">priority</Form.Label>
+                <Form.Group className="d-flex mt-2">
+               
+
               <Col>
               <Form.Check 
-                inline
+                    inline
                     type="radio"
                     onChange={handelChange}
                     value='high'
-                    name="priority"
-                    
                     label='High'
+                    name="priority" 
                     checked={priority === 'high'}
                     ></Form.Check>
               </Col>
@@ -196,10 +227,11 @@ const [errors ,setErrors] =useState({
                     </Col>   
                        
   
-              
+                    </Form.Group>
                </Row>
                <Row>
                <Form.Label htmlFor="priority">Status</Form.Label>
+               <Form.Group className="d-flex">
                 <Col>
                 <Form.Check inline
                     type="radio"
@@ -230,6 +262,7 @@ const [errors ,setErrors] =useState({
                     checked={status === 'completed'}
                     ></Form.Check>
                 </Col>
+                </Form.Group>
                </Row>
                <Row>
                 <Col >

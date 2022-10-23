@@ -8,8 +8,26 @@ import Issues from './components/Issues'
 import { Row,Col,Container } from 'react-bootstrap'
 
 function App() {
-  const [issues, setIssue] = useState([])
+  const [issues, setIssue] = useState([{
+    id:"d430255c-0399-4af3-83ef-2f709cd2aedf",
+    title:"sample title",
+    subTitle:"sample subTitle",
+    assignedTo:"Rayhan",
+    startDate:"",
+    endDate:"",
+    priority:'low',
+    status:'new',
+    completedPercentage:0
+  }])
+  const [totalCount,setTotalCount] = useState(0)
+  const [newCount,setNewCount] = useState(0)
+  const [progressCount,setProgressCount] = useState(0)
+  const [completedCount,setCompletedCount] = useState(0)
+
+
   const addIssue=(issue)=>{
+    
+     setIssue([...issues ,issue])
      console.log(issue)
   }
 
@@ -19,8 +37,13 @@ function App() {
      
         <Container>
             <AddIssue addIssue={addIssue}/>
-            <IssueBar/>
-            <Issues />
+            <IssueBar
+             totalCount={totalCount}
+              newCount={newCount} 
+              progressCount={progressCount}
+              completedCount={completedCount}
+              />
+            <Issues issues={issues}/>
         </Container>
      
       
