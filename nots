@@ -1,0 +1,5 @@
+1.create add issue
+2.create form and validation
+3.create in app component array hook [for catch form data]
+4.create function and parameter pass ["issue" is hook array]
+5.pass the props in target component[like "addIssue"]

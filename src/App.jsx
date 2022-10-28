@@ -17,7 +17,7 @@ function App() {
     endDate:"",
     priority:'low',
     status:'new',
-    completedPercentage:0
+    completedPercentage:1
   }])
   const [totalCount,setTotalCount] = useState(0)
   const [newCount,setNewCount] = useState(0)
@@ -28,8 +28,43 @@ function App() {
   const addIssue=(issue)=>{
     
      setIssue([...issues ,issue])
-     console.log(issue)
+     //console.log(issue)
+     if(issue.status === 'new'){
+      setNewCount(prevValue=>prevValue + 1)
+     }
+     if(issue.status === 'inProgress'){
+      setProgressCount(prevValue =>prevValue + 1)
+     }
+     if(issue.status === 'completed'){
+      setCompletedCount(prevValue =>prevValue + 1)
+     }
+     if(issues.status === 'new'){
+      setTotalCount(prevValue=>prevValue + 1)
+     }
   }
+ //deleteIssue
+ const deleteIssue =(id)=>{
+ //console.log(id)
+ const afterDeleteIssue = issues.filter(issue => issue.id !== id)
+   setIssue(afterDeleteIssue)
+ }
+  //update issue filed
+const completedIssue =(id)=>{
+ //console.log(id)
+  const issueAfterComled = issues.map(issue =>{
+   if(issue.id === id){
+    return{
+      ...issue,
+      status:'completed',
+      completedPercentage:100
+    }
+   }else{
+    return issue
+   }
+  })
+  setIssue(issueAfterComled)
+}
+
 
   return (
     <>
@@ -37,13 +72,15 @@ function App() {
      
         <Container>
             <AddIssue addIssue={addIssue}/>
-            <IssueBar
-             totalCount={totalCount}
-              newCount={newCount} 
-              progressCount={progressCount}
-              completedCount={completedCount}
-              />
-            <Issues issues={issues}/>
+            
+            <Issues issues={issues}
+            totalCount={totalCount}
+            newCount={newCount} 
+            progressCount={progressCount}
+            completedCount={completedCount}
+            completedIssue={completedIssue}
+            deleteIssue ={deleteIssue}
+            />
         </Container>
      
       

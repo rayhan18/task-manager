@@ -1,10 +1,19 @@
-import { Table } from "react-bootstrap";
-import { FaEdit,FaCheckSquare,FaTrash } from "react-icons/fa";
-const Issues =({issues})=>{
+import { Table,Badge ,ProgressBar } from "react-bootstrap";
+import { FaEdit,FaCheckSquare,FaTrash, FaChalkboardTeacher, FaTicketAlt, FaTwitch } from "react-icons/fa";
+import Issue from "./Issue";
+import IssueBar from "./IssueBar"
+
+const Issues =({issues ,totalCount,newCount,progressCount ,completedCount,completedIssue ,deleteIssue})=>{
     return(
         <div>
             
    <h3>All Issues...</h3>
+   <IssueBar
+            totalCount={totalCount}
+             newCount={newCount} 
+             progressCount={progressCount}
+             completedCount={completedCount}
+              />
     <Table striped bordered hover size="sm">
       <thead>
         <tr>
@@ -21,27 +30,9 @@ const Issues =({issues})=>{
       </thead>
       <tbody>
         
-     
+    {issues.map(issue =><Issue key={issue.id} issue={issue} completedIssue={completedIssue} deleteIssue={deleteIssue}/>)} 
    
-        {issues.map((issue)=>{
-            const {id ,title,assignedTo,startDate, endDate,priority,status,completedPercentage}= issue
-            return(
-        <tr key={id}>
-          <td>{id}</td>
-          <td>{title}</td>
-          <td>{priority}</td>
-          <td>{assignedTo}</td>
-          <td>{status}</td>
-          <td>{endDate}</td>
-          <td>{completedPercentage}</td>
-          <td>
-            <FaEdit className="text-inof"/>
-            <FaCheckSquare className="text-success m-3"/>
-            <FaTrash className="text-danger"/>
-          </td>
-        </tr>
-            )
-        })}
+       
       </tbody>
     </Table>
   

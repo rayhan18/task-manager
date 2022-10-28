@@ -1,292 +1,279 @@
-import { useState } from "react";
-import {  Container, Form ,Row ,Col, Button} from "react-bootstrap";
-import { v4 as uuidv4 } from 'uuid';
+import { Container, Row,Col, Form ,Button } from "react-bootstrap"
+import {useState} from "react"
+import {v4 as uuid} from 'uuid'
 const defaultIssue={
-    title:"",
-    subTitle:"",
-    assignedTo:"",
-    startDate:"",
-    endDate:"",
-    priority:'low',
-    status:'new',
-    completedPercentage:0
+  title:'',
+  subTitle:'',
+  assignedTo:'',
+  startDate:'',
+  endDate:'',
+  priority:'low',
+  status:'new',
+  completedPercentage:1
 }
+
 const AddIssue =({addIssue})=>{
-
-const [issue ,setIssue] =useState(defaultIssue)
-const [errors ,setErrors] =useState({
-    title:"",
-    subTitle:"",
-    assignedTo:"",
-    startDate:"",
-    endDate:"",
+const [issue, setIssue]= useState(defaultIssue)
+const [errorIssue, setErrorIssue]= useState({
+  title:'',
+  subTitle:'',
+  assignedTo:'',
+  startDate:'',
+  endDate:''
 })
-  const  handelChange=(evt)=>{
-    setIssue ({
-        ...issue,
-        [evt.target.name] : evt.target.value
-       })
-       setErrors({
-        ...errors,
-        [evt.target.name] :''
-       })
+
+
+//catch value
+  const handelChange =(evn)=>{
+    setIssue({
+      ...issue,
+      [evn.target.name]:evn.target.value
+    })
+    setErrorIssue({
+      ...errorIssue,
+      [evn.target.name]:''
+    })
+  }
+
+  //form submit
+  const handelSubmit=(evn)=>{
+    evn.preventDefault()
+    const {title ,subTitle ,assignedTo, startDate}= issue
+
+//check error
+    if(title === ''){
+      setErrorIssue((prevErrors)=>({
+          ...prevErrors,
+          title:'Title is requires'
+      }))
     }
-    const handelSubmit=(evt)=>{
-    const {title ,subTitle  ,assignedTo,startDate,endDate } = issue
-        evt.preventDefault()
-        //check error
-        if(title === ""){
-            setErrors((prevError)=>({
-                ...prevError,
-                title:" title is required"
-            }))
-        }
 
-        if(assignedTo === ""){
-            setErrors((prevErr)=>({
-                ...prevErr,
-                assignedTo:" assignedTo is required"
-            }))
-        }
-
-        if(subTitle === ""){
-            setErrors((prevErr)=>({
-                ...prevErr,
-                subTitle:" subtitle is required"
-            }))
-        }
-        
-        if(startDate === ""){
-            setErrors((prevErr)=>({
-                ...prevErr,
-                startDate:" startDate is required"
-            }))
-        }
-        if(endDate === ""){
-            setErrors((prevErr)=>({
-                ...prevErr,
-                endDate:" endDate is required"
-            }))
-        }
+    if(subTitle === ''){
+      setErrorIssue((prevErrors)=>({
+          ...prevErrors,
+          subTitle:'massage is requires'
+      }))
     }
-    //return every element true otherwise false
-    const isValid = Object.values(issue).every(elm => elm)
-
-    if(isValid){
-        // is true then form submitted
-        addIssue({
-            id: uuidv4(),
-            ...issue
-        })
-        //console.log(issue)
-        //form cleared
-        setIssue(defaultIssue)
+    if(assignedTo === ''){
+      setErrorIssue((prevErrors)=>({
+          ...prevErrors,
+          assignedTo:'assigned To is requires'
+      }))
     }
-    const {title ,subTitle  ,startDate,endDate ,priority,status,completedPercentage ,assignedTo } = issue
-    const {title:errorTitle ,subTitle:errorSubTitle ,
-        assignedTo:errorAssignTo,
-        startDate:errorStartDate ,
-        endDate:errorEndDate
-    } = errors 
-    return(
-        <>
-        <Container>
-            <Row>
-                <Col sm={12} md={2} lg={3}>
-
-                </Col>
-                <Col sm={12} md={6} lg={6}>
-                <h1> Add issue</h1>
-            <Form onSubmit={handelSubmit}>
-                <Form.Group  className="mb-3">
-                    <Form.Label>Title </Form.Label>
-                    <Form.Control 
-                     type='text'
-                     id="title"
-                     name="title"
-                     onChange={handelChange}
-                     value={title}
-                     placeholder ='enter your task name'
-                     isInvalid = {errorTitle}
-                     />
-                    <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
-                        {errorTitle}
-                    </Form.Control.Feedback>
-                </Form.Group>
-
-
-                <Form.Group  className="mb-3">
-                    <Form.Label>assignedTo </Form.Label>
-                    <Form.Control 
-                     type='text'
-                     id="assignedTo"
-                     name="assignedTo"
-                     onChange={handelChange}
-                     value={assignedTo}
-                     placeholder ='enter your task name'
-                     isInvalid = {errorAssignTo}
-                     />
-                    <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
-                        {errorAssignTo}
-                    </Form.Control.Feedback>
-                </Form.Group>
-
-
-
-                <Form.Group  className="mb-3">
-                    <Form.Label>Message </Form.Label>
-                    <Form.Control as="textarea" 
-                  
-                     name="subTitle"
-                     onChange={handelChange}
-                     value={subTitle}
-                     id='subTitle'
-                     placeholder ='enter your task Details'
-                     isInvalid = {errorSubTitle}
-                     />
-                   <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
-                        {errorSubTitle}
-                    </Form.Control.Feedback>
-                </Form.Group>
-
-               <Row className="">
-                <Col md={6}>
-                <Form.Group>
-                    <Form.Label htmlFor="startDate">start date </Form.Label>
-                    <Form.Control
-                    type="date"
-                    onChange={handelChange}
-                    value={startDate}
-                    name="startDate"
-                    placeholder='enter start Date'
-                    isInvalid={errorStartDate}
-                 
-                    />
-                    <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
-                        {errorStartDate}
-                    </Form.Control.Feedback>
-                </Form.Group>
-                </Col>
-                <Col>
-                <Form.Group>
-                    <Form.Label htmlFor="startDate">End date </Form.Label>
-                    <Form.Control
-                    type="date"
-                    onChange={handelChange}
-                    value={endDate}
-                    name="endDate"
-                    placeholder='enter end Date'
-                    isInvalid={errorEndDate}
-                    
-                    />
-                    <Form.Control.Feedback type="isInvalid" className="d-block text-danger">
-                        {errorEndDate}
-                    </Form.Control.Feedback>
-                </Form.Group> 
-                </Col>
-               
-              
-               </Row>
-               <Row >
-               <Form.Label htmlFor="priority">priority</Form.Label>
-                <Form.Group className="d-flex mt-2">
-               
-
-              <Col>
-              <Form.Check 
-                    inline
-                    type="radio"
-                    onChange={handelChange}
-                    value='high'
-                    label='High'
-                    name="priority" 
-                    checked={priority === 'high'}
-                    ></Form.Check>
-              </Col>
-               
-               <Col>
-               <Form.Check inline
-                    type="radio"
-                    onChange={handelChange}
-                    value='medium'
-                    name="priority"
-                    label='Medium'
-                    checked={priority === 'medium'}
-                    ></Form.Check>
-               </Col>
-                   
-                    <Col>
-                    <Form.Check inline
-                    type="radio"
-                    onChange={handelChange}
-                    value='low'
-                    name="priority"
-                    label='Low'
-                    checked={priority === 'low'}
-                    ></Form.Check>
-                    </Col>   
-                       
+    if(startDate === ''){
+      setErrorIssue((prevErrors)=>({
+          ...prevErrors,
+          startDate:'start Date  is requires'
+      }))
+    }
+    if(endDate === ''){
+      setErrorIssue((prevErrors)=>({
+          ...prevErrors,
+          endDate:'end Date  is requires'
+      }))
+    }
+    //check all filed is true
+  const isValidData =Object.values(issue).find(elem=>elem)
+  if(isValidData){
+   // value is true then submit form
+    //console.log(issue)
+   addIssue({
+    id: uuid(),
+    ...issue
+  })
+   setIssue(defaultIssue)
+  }
+  }
   
-                    </Form.Group>
-               </Row>
-               <Row>
-               <Form.Label htmlFor="priority">Status</Form.Label>
-               <Form.Group className="d-flex">
-                <Col>
-                <Form.Check inline
-                    type="radio"
-                    onChange={handelChange}
-                    value='new'
-                    name="status"
-                    label='New'
-                    checked={status === 'new'}
-                    ></Form.Check>
-                </Col>
-                <Col>
-                <Form.Check inline
-                    type="radio"
-                    onChange={handelChange}
-                    value='inprogress'
-                    name="status"
-                    label='In progress'
-                    checked={status === 'inprogress'}
-                    ></Form.Check>
-                </Col>
-                <Col>
-                <Form.Check inline
-                    type="radio"
-                    onChange={handelChange}
-                    value='completed'
-                    name="status"
-                    label='Completed'
-                    checked={status === 'completed'}
-                    ></Form.Check>
-                </Col>
-                </Form.Group>
-               </Row>
-               <Row>
-                <Col >
-                <Form.Label >Range</Form.Label>
-                <Form.Range 
-                onChange={handelChange}
-                name="completedPercentage"
-                value={completedPercentage}
-                />
-                </Col>
-                <Col >
-                {completedPercentage}
-                </Col>
-               </Row>
-                <Button  className="mt-2" size='md' variant='primary' type="submit"> Submit</Button>
-            </Form>
-                </Col>
-                <Col sm={12} md={2} lg={3}>
+  const {title ,subTitle ,assignedTo , startDate,endDate ,priority,status ,completedPercentage}= issue
+  const {
+    title:errorTitle ,
+    subTitle:errorSubTitle,
+    assignedTo:errorassignedTo,
+    startDate:errorStartDate,
+    endDate:errorEndDate
+    }= errorIssue
+  return(
+    <>
+    
+      <Container className="">
+
+        <Row>
+        <h1>Add issues</h1>
+          <Col>
+            <Form onSubmit={handelSubmit}>
+              <Form.Group>
+              <Form.Label>Title</Form.Label>
+              <Form.Control
+               type='text'
+               name='title'
+               value={title}
+               placeholder='title'
+               onChange={handelChange}
+               isInvalid={errorTitle}
+              />
+              <Form.Control.Feedback type='inValid' className="d-blog text-danger">
+                {errorTitle}
+              </Form.Control.Feedback>
+              </Form.Group>
+             
+              <Form.Group>
+              <Form.Label>assigned to</Form.Label>
+              <Form.Control
+               type='text'
+               name='assignedTo'
+               value={assignedTo}
+               placeholder='assigned To'
+               onChange={handelChange}
+               isInvalid={errorassignedTo}
+              />
+              <Form.Control.Feedback type='inValid' className="d-blog text-danger">
+                {errorassignedTo}
+              </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group>
+              <Form.Label> Message</Form.Label>
+              <Form.Control
+               as='textarea'
+               name='subTitle'
+               value={subTitle}
+               placeholder='sub Title'
+               onChange={handelChange}
+               isInvalid={errorSubTitle}
+              />
+               <Form.Control.Feedback type='inValid' className="d-blog text-danger">
+                {errorSubTitle}
+              </Form.Control.Feedback>
+              </Form.Group>
+
+              <Form.Group>
+                <Row>
+                  <Col>
+                  <Form.Label htmlFor="startDate">Start Date </Form.Label>
+                  <Form.Control
+                  type='date'
+                  onChange={handelChange}
+                  name='startDate'
+                  value={startDate}
+                  placeholder='startDate'
+                  isInvalid={errorStartDate}
+                  />
+                  <Form.Control.Feedback type='inValid' className="d-blog text-danger">
+                {errorStartDate}
+              </Form.Control.Feedback>
+                  </Col>
+                  <Col>
+                  <Form.Label htmlFor="startDate">End Date </Form.Label>
+                  <Form.Control
+                  type='date'
+                  onChange={handelChange}
+                  name='endDate'
+                  value={endDate}
+                  placeholder='end Date'
+                  isInvalid={errorEndDate}
+                  />
+                  <Form.Control.Feedback type='inValid' className="d-blog text-danger">
+                {errorEndDate}
+              </Form.Control.Feedback>
+                  </Col>
+                </Row>
+              
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="priority">priority</Form.Label>
+                <Row>
+                  <Col sm='auto'>
+                  <Form.Check
+               type="radio"
+               onChange={handelChange}
+               name='priority'
+               value='high'
+               label='High'
+               checked={priority === 'high'}
+               />
+                  </Col>
+                  <Col sm='auto'>
+                  <Form.Check
+               type="radio"
+               onChange={handelChange}
+               name='priority'
+               value='medium'
+               label='Medium'
+               checked={priority === 'medium'}
+               />
+                  </Col>
+                  <Col sm='auto'>
+                  <Form.Check
+               type="radio"
+               onChange={handelChange}
+               name='priority'
+               value='low'
+               label='Low'
+               checked={priority === 'low'}
+               />
+                  </Col>
+                </Row>
+               
+               
+              </Form.Group>
+              <Form.Group>
+                <Form.Label htmlFor="status">status</Form.Label>
+                <Row>
+                  <Col sm='auto'>
+                  <Form.Check
+               type="radio"
+               onChange={handelChange}
+               name='status'
+               value='new'
+               label='new'
+               checked={status === 'new'}
+               />
+                  </Col>
+                  <Col sm='auto'>
+                  <Form.Check
+               type="radio"
+               onChange={handelChange}
+               name='status'
+               value='inProgress'
+               label='in Progress'
+               checked={status === 'inProgress'}
+               />
+                  </Col>
+                  <Col sm='auto'>
+                  <Form.Check
+               type="radio"
+               onChange={handelChange}
+               name='status'
+               value='completed'
+               label='completed'
+               checked={status === 'completed'}
+               />
+                  </Col>
+                  
+                </Row>
                 
-                </Col>
-            </Row>
-        </Container>
-            
-        </>
-    )
+              </Form.Group>
+                <Form.Group>
+                <Form.Label htmlFor='completedPercentage'> Completed in percentage</Form.Label>
+                   <Row>
+                    <Col className="w-50">
+                    <Form.Range 
+                      value={completedPercentage}
+                      name='completedPercentage'
+                      onChange={handelChange}
+                    ></Form.Range>
+                    </Col>
+                   <Col>
+                   <p>{completedPercentage}</p>
+                    </Col>
+                    </Row> 
+                </Form.Group>
+              <Button className='mt-2 ' type='submit'> Submit</Button>
+            </Form>
+          </Col>
+        </Row>
+      </Container>
+    </>
+  )
 }
-export default AddIssue;
+export default AddIssue
