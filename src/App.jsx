@@ -1,11 +1,20 @@
 import { useState } from 'react'
 import reactLogo from './assets/react.svg'
-
+import { toast, ToastContainer } from 'react-toastify';
 import Navigation from './components/Navigation'
 import AddIssue from './components/AddIssue'
 import IssueBar from './components/IssueBar'
 import Issues from './components/Issues'
+import Homepage from './components/Homepage'
+
 import { Row,Col,Container } from 'react-bootstrap'
+import {
+  BrowserRouter ,
+  Routes,
+  Route,
+ 
+} from "react-router-dom";
+import NotFoundPage from './components/NotFoundPage';
 
 function App() {
   const [issues, setIssue] = useState([{
@@ -68,22 +77,42 @@ const completedIssue =(id)=>{
 
   return (
     <>
+    <BrowserRouter>
       <Navigation/>
      
         <Container>
-            <AddIssue addIssue={addIssue}/>
-            
-            <Issues issues={issues}
+          <Routes>
+          <Route path="/"  element={ <Homepage/>}/>
+            <Route path="/add" element={ <AddIssue addIssue={addIssue}/>}/>
+            <Route path= "/issue" element={<Issues issues={issues}
             totalCount={totalCount}
             newCount={newCount} 
             progressCount={progressCount}
             completedCount={completedCount}
             completedIssue={completedIssue}
             deleteIssue ={deleteIssue}
-            />
+            />} />
+            <Route path='*' element={<NotFoundPage/>} />
+          </Routes>
+           
+            
+            
         </Container>
-     
-      
+        </BrowserRouter>
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              />
+              {/* Same as */}
+              <ToastContainer />
       
     </>
   )

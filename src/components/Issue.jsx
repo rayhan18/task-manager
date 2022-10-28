@@ -2,7 +2,7 @@ import { Badge ,ProgressBar ,Modal ,Button } from "react-bootstrap";
 import { FaEdit,FaTrash, FaTwitch } from "react-icons/fa";
 import { useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
-import { ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 const Issue=({issue ,completedIssue ,deleteIssue})=>{
   const [show, setShow] = useState(false);
 
@@ -11,6 +11,7 @@ const Issue=({issue ,completedIssue ,deleteIssue})=>{
     //console.log(evn.target.dataset.action)
     if(evn.target.dataset.action === "delete"){
       deleteIssue(id)
+      toast.success('issue is deleted successfully')
     }
     setShow(false)};
     const handleShow = () => setShow(true);
@@ -62,20 +63,7 @@ const Issue=({issue ,completedIssue ,deleteIssue})=>{
         <FaTrash className="text-danger" onClick={handleShow}/>
       </td>
     </tr>
-    <ToastContainer
-position="top-right"
-autoClose={5000}
-hideProgressBar={false}
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-theme="light"
-/>
-{/* Same as */}
-<ToastContainer />
+   
     </>
         )
     

@@ -1,6 +1,8 @@
 import { Container, Row,Col, Form ,Button } from "react-bootstrap"
 import {useState} from "react"
 import {v4 as uuid} from 'uuid'
+import {useNavigate} from 'react-router-dom'
+import { toast } from "react-toastify"
 const defaultIssue={
   title:'',
   subTitle:'',
@@ -13,6 +15,7 @@ const defaultIssue={
 }
 
 const AddIssue =({addIssue})=>{
+  const navigate = useNavigate()
 const [issue, setIssue]= useState(defaultIssue)
 const [errorIssue, setErrorIssue]= useState({
   title:'',
@@ -81,7 +84,9 @@ const [errorIssue, setErrorIssue]= useState({
     id: uuid(),
     ...issue
   })
-   setIssue(defaultIssue)
+  toast.success('issue added successfully')
+  navigate('/issue')
+   //etIssue(defaultIssue)
   }
   }
   
