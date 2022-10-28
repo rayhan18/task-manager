@@ -3,7 +3,10 @@ import { FaEdit,FaTrash, FaTwitch } from "react-icons/fa";
 import { useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
+
 const Issue=({issue ,completedIssue ,deleteIssue})=>{
+  const navigate = useNavigate()
   const [show, setShow] = useState(false);
 
   const handleClose = (evn) => {
@@ -58,7 +61,7 @@ const Issue=({issue ,completedIssue ,deleteIssue})=>{
       animated
       /></td>
       <td className="justify-content-between">
-        <FaEdit className="text-info "/>
+        <FaEdit onClick= {()=> navigate(`/edit/${id}`)} className="text-info "/>
         <FaTwitch className="text-success mx-3 courser-pointer" onClick={()=>completedIssue(id)}/>
         <FaTrash className="text-danger" onClick={handleShow}/>
       </td>

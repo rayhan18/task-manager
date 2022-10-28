@@ -15,6 +15,7 @@ import {
  
 } from "react-router-dom";
 import NotFoundPage from './components/NotFoundPage';
+import EditIssue from './components/EditIssue';
 
 function App() {
   const [issues, setIssue] = useState([{
@@ -84,6 +85,7 @@ const completedIssue =(id)=>{
           <Routes>
           <Route path="/"  element={ <Homepage/>}/>
             <Route path="/add" element={ <AddIssue addIssue={addIssue}/>}/>
+            <Route path="/edit/:id" element={ <EditIssue/>}/>
             <Route path= "/issue" element={<Issues issues={issues}
             totalCount={totalCount}
             newCount={newCount} 
