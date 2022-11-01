@@ -52,13 +52,30 @@ function App() {
       setTotalCount(prevValue=>prevValue + 1)
      }
   }
+  //editIssue n update 
+  const upDateIssue=(issueUpdate)=>{
+   console.log(issueUpdate ,'update')
+  const issueAfterUpdate = issues.map(issue=>{
+     if(issue.id === issueUpdate.id){
+      return{
+        ...issueUpdate,
+        id:issue.id,
+        status: parseInt(issueUpdate.completedPercentage ) < 100 ? 'inprogress': issueUpdate.status
+      }
+     }else{
+      return issue
+     }
+   })
+   //console.log(issueAfterUpdate)
+   setIssue(issueAfterUpdate)
+  }
  //deleteIssue
  const deleteIssue =(id)=>{
  //console.log(id)
  const afterDeleteIssue = issues.filter(issue => issue.id !== id)
    setIssue(afterDeleteIssue)
  }
-  //update issue filed
+  //update status issue filed
 const completedIssue =(id)=>{
  //console.log(id)
   const issueAfterComled = issues.map(issue =>{
@@ -85,7 +102,7 @@ const completedIssue =(id)=>{
           <Routes>
           <Route path="/"  element={ <Homepage/>}/>
             <Route path="/add" element={ <AddIssue addIssue={addIssue}/>}/>
-            <Route path="/edit/:id" element={ <EditIssue/>}/>
+            <Route path="/edit/:id" element={ <EditIssue issues={issues} upDateIssue={upDateIssue} />}/>
             <Route path= "/issue" element={<Issues issues={issues}
             totalCount={totalCount}
             newCount={newCount} 
