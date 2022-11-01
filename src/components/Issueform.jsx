@@ -4,14 +4,16 @@ import {useState ,useEffect} from "react"
 import {v4 as uuid} from 'uuid'
 import {useNavigate} from 'react-router-dom'
 import { toast } from "react-toastify"
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { addDays } from "date-fns"
 
 const defaultIssue={
     title:'',
     subTitle:'',
     assignedTo:'',
-    startDate:'',
-    endDate:'',
+    startDate: new Date(),
+    endDate: addDays(new Date(),1) ,
     priority:'low',
     status:'new',
     completedPercentage:1
@@ -206,13 +208,20 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
                 <Row>
                   <Col>
                   <Form.Label htmlFor="startDate">Start Date </Form.Label>
-                  <Form.Control
+                  <DatePicker
+                  selected={startDate} 
                   type='date'
-                  onChange={handelChange}
+                  onChange={(date)=> setIssue({
+                    ...issue,
+                    startDate:date})}   
+                    startDate={startDate}
+                    endDate={endDate}
+                   // minDate={new date()}
                   name='startDate'
                   value={startDate}
                   placeholder='startDate'
                   isInvalid={errorStartDate}
+                  selectsStart
                   />
                   <Form.Control.Feedback type='inValid' className="d-blog text-danger">
                 {errorStartDate}
@@ -220,9 +229,16 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
                   </Col>
                   <Col>
                   <Form.Label htmlFor="startDate">End Date </Form.Label>
-                  <Form.Control
+                  <DatePicker
                   type='date'
-                  onChange={handelChange}
+                  selected={endDate} 
+                  onChange={(date)=> setIssue({
+                    ...issue,
+                    endDate:date})}
+                    selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
                   name='endDate'
                   value={endDate}
                   placeholder='end Date'

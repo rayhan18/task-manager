@@ -23,8 +23,8 @@ function App() {
     title:"sample title",
     subTitle:"sample subTitle",
     assignedTo:"Rayhan",
-    startDate:"",
-    endDate:"",
+    startDate:new Date(),
+    endDate: new Date(),
     priority:'low',
     status:'new',
     completedPercentage:1

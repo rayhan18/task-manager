@@ -4,6 +4,7 @@ import { useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
+import {format} from 'date-fns'
 
 const Issue=({issue ,completedIssue ,deleteIssue})=>{
   const navigate = useNavigate()
@@ -52,7 +53,7 @@ const Issue=({issue ,completedIssue ,deleteIssue})=>{
       <td><Badge bg={`${lowClass}${mediumClass}${highClass}`} pill> {priority}</Badge></td>
       <td>{assignedTo}</td>
       <td>{completedStatue}</td>
-      <td>{endDate}</td>
+      <td>{format(new Date(endDate), 'dd/MM/YYY')}</td>
       <td><ProgressBar 
       variant={`${lowPercentage}${mediumPercentage}${highPercentage}`}
       level = {completedPercentage}
