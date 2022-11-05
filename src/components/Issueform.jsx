@@ -7,17 +7,20 @@ import { toast } from "react-toastify"
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { addDays } from "date-fns"
+import TextInput from "../formInputs/TextInput"
+import DateInput from "../formInputs/DateInput"
+import CheckInput from "../formInputs/CheckInput"
 
-const defaultIssue={
-    title:'',
-    subTitle:'',
-    assignedTo:'',
-    startDate: new Date(),
-    endDate: addDays(new Date(),1) ,
-    priority:'low',
-    status:'new',
-    completedPercentage:1
-  }
+// const defaultIssue={
+//     title:'',
+//     subTitle:'',
+//     assignedTo:'',
+//     startDate: new Date(),
+//     endDate: addDays(new Date(),1) ,
+//     priority:'low',
+//     status:'new',
+//     completedPercentage:1
+//   }
 const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=>{
  
         const navigate = useNavigate()
@@ -151,6 +154,48 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
             endDate:errorEndDate
             }= errorIssue
     
+
+            const priorityTypes = [
+              {
+                name:'priority',
+                value:'high',
+                label:'High',
+                valueToChecked:priority
+              },
+              {
+                name:'priority',
+                value:'medium',
+                label:'Medium',
+                valueToChecked:priority
+              },
+              {
+                name:'priority',
+                value:'low',
+                label:'Low',
+                valueToChecked:priority
+              },
+            ]
+            
+            const statusChecks =[
+              {
+                name:'status',
+                value:'new',
+                label:'New',
+                statusType:status
+              },
+              {
+                name:'status',
+                value:'inProgress',
+                label:'in Progress',
+                statusType:status
+              },
+              {
+                name:'status',
+                value:'completed',
+                label:'Completed',
+                statusType:status
+              },
+            ]
     return(
         <>
     
@@ -160,7 +205,7 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
         <h1>{EditToIssue ? 'Edit Issue' : 'Add issues'}</h1>
           <Col>
             <Form onSubmit={handelSubmit}>
-              <Form.Group>
+              {/* <Form.Group>
               <Form.Label>Title</Form.Label>
               <Form.Control
                type='text'
@@ -173,11 +218,19 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
               <Form.Control.Feedback type='inValid' className="d-blog text-danger">
                 {errorTitle}
               </Form.Control.Feedback>
-              </Form.Group>
-             
-              <Form.Group>
+              </Form.Group> */}
+             <TextInput 
+              type='text'
+              name='title'
+              value={title}
+              placeholder='title'
+              onChange={handelChange}
+              error={errorTitle}
+             />
+              {/* <Form.Group>
               <Form.Label>assigned to</Form.Label>
               <Form.Control
+               label=' Title'
                type='text'
                name='assignedTo'
                value={assignedTo}
@@ -188,8 +241,17 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
               <Form.Control.Feedback type='inValid' className="d-blog text-danger">
                 {errorassignedTo}
               </Form.Control.Feedback>
-              </Form.Group>
-              <Form.Group>
+              </Form.Group> */}
+              <TextInput 
+               label=' Assigned to'
+              type='text'
+              name='assignedTo'
+              value={assignedTo}
+              placeholder='assigned To'
+              onChange={handelChange}
+              error={errorassignedTo}
+             />
+              {/* <Form.Group>
               <Form.Label> Message</Form.Label>
               <Form.Control
                as='textarea'
@@ -199,16 +261,26 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
                onChange={handelChange}
                isInvalid={errorSubTitle}
               />
+
                <Form.Control.Feedback type='inValid' className="d-blog text-danger">
                 {errorSubTitle}
               </Form.Control.Feedback>
-              </Form.Group>
-
+              </Form.Group> */}
+             <TextInput 
+             label='Sub title'
+              type='text'
+              name='subTitle'
+              value={subTitle}
+              placeholder='sub Title'
+              onChange={handelChange}
+              error={errorSubTitle}
+              as='textarea'
+             />
               <Form.Group>
                 <Row>
                   <Col>
                   <Form.Label htmlFor="startDate">Start Date </Form.Label>
-                  <DatePicker
+                  {/* <DatePicker
                   selected={startDate} 
                   type='date'
                   onChange={(date)=> setIssue({
@@ -222,14 +294,45 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
                   placeholder='startDate'
                   isInvalid={errorStartDate}
                   selectsStart
-                  />
+                  /> */}
+{/*                   
                   <Form.Control.Feedback type='inValid' className="d-blog text-danger">
                 {errorStartDate}
-              </Form.Control.Feedback>
+              </Form.Control.Feedback> */}
+              <DateInput
+               selected={startDate} 
+               type='date'
+               onChange={(date)=> setIssue({
+                 ...issue,
+                 startDate:date})}   
+                 startDate={startDate}
+                 endDate={endDate}
+                 //minDate={new date()}
+               name='startDate'
+               value={startDate}
+               placeholder='startDate'
+               error={errorStartDate}
+               selectsStart
+              />
                   </Col>
                   <Col>
                   <Form.Label htmlFor="startDate">End Date </Form.Label>
-                  <DatePicker
+                  <DateInput
+                  type='date'
+                  selected={endDate} 
+                  onChange={(date)=> setIssue({
+                    ...issue,
+                    endDate:date})}
+                    selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                  name='endDate'
+                  value={endDate}
+                  placeholder='end Date'
+                  error={errorEndDate}
+                  />
+                  {/* <DatePicker
                   type='date'
                   selected={endDate} 
                   onChange={(date)=> setIssue({
@@ -243,47 +346,33 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
                   value={endDate}
                   placeholder='end Date'
                   isInvalid={errorEndDate}
-                  />
-                  <Form.Control.Feedback type='inValid' className="d-blog text-danger">
+                  /> */}
+                  {/* <Form.Control.Feedback type='inValid' className="d-blog text-danger">
                 {errorEndDate}
-              </Form.Control.Feedback>
+              </Form.Control.Feedback> */}
                   </Col>
                 </Row>
               
               </Form.Group>
+             
               <Form.Group>
                 <Form.Label htmlFor="priority">priority</Form.Label>
-                <Row>
-                  <Col sm='auto'>
-                  <Form.Check
-               type="radio"
-               onChange={handelChange}
-               name='priority'
-               value='high'
-               label='High'
-               checked={priority === 'high'}
-               />
-                  </Col>
-                  <Col sm='auto'>
-                  <Form.Check
-               type="radio"
-               onChange={handelChange}
-               name='priority'
-               value='medium'
-               label='Medium'
-               checked={priority === 'medium'}
-               />
-                  </Col>
-                  <Col sm='auto'>
-                  <Form.Check
-               type="radio"
-               onChange={handelChange}
-               name='priority'
-               value='low'
-               label='Low'
-               checked={priority === 'low'}
-               />
-                  </Col>
+                <Row className="">
+               
+                  {priorityTypes.map((priorityType,index) =>(
+                     <Col sm='auto' key={index}>
+                      <CheckInput  
+                      name={priorityType.name}
+                      onChange={handelChange}
+                      value={priorityType.value}
+                      label={priorityType.label}
+                      valueToChecked={priorityType.valueToChecked}
+                      />
+                      </Col>
+                  ))}
+               
+             
+            
                 </Row>
                
                
@@ -291,36 +380,39 @@ const IssueForm =({addIssue ,upDateIssue,handleUpdateIssue ,issue:EditToIssue})=
               <Form.Group>
                 <Form.Label htmlFor="status">status</Form.Label>
                 <Row>
-                  <Col sm='auto'>
-                  <Form.Check
-               type="radio"
-               onChange={handelChange}
-               name='status'
-               value='new'
-               label='new'
-               checked={status === 'new'}
-               />
-                  </Col>
-                  <Col sm='auto'>
-                  <Form.Check
-               type="radio"
+                  {statusChecks.map((statusCheck,index) =>(
+                    <Col sm='auto' key={index}>
+                    <CheckInput 
+
+                    onChange={handelChange}
+                    name={statusCheck.name}
+                    value={statusCheck.value}
+                    label={statusCheck.label}
+                    valueToChecked={statusCheck.statusType }
+                    />
+                    </Col>
+                  ))}
+                 
+                  {/* <Col sm='auto'>
+                  <CheckInput 
+              
                onChange={handelChange}
                name='status'
                value='inProgress'
                label='in Progress'
-               checked={status === 'inProgress'}
+               valueToChecked={status }
                />
                   </Col>
                   <Col sm='auto'>
-                  <Form.Check
-               type="radio"
+                  <CheckInput 
+               
                onChange={handelChange}
                name='status'
                value='completed'
                label='completed'
-               checked={status === 'completed'}
+               valueToChecked={status }
                />
-                  </Col>
+                  </Col> */}
                   
                 </Row>
                 
