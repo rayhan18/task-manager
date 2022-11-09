@@ -1,12 +1,15 @@
 import { Badge ,ProgressBar ,Modal ,Button } from "react-bootstrap";
 import { FaEdit,FaTrash, FaTwitch } from "react-icons/fa";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { useNavigate } from "react-router-dom";
 import {format} from 'date-fns'
+import { IssueContext } from "../assets/context/IssueContext";
 
-const Issue=({issue ,completedIssue ,deleteIssue})=>{
+const Issue=({issue ,completedIssue })=>{
+
+  const{deleteIssue} = useContext(IssueContext)
   const navigate = useNavigate()
   const [show, setShow] = useState(false);
 

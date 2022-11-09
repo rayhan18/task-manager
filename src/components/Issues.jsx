@@ -1,10 +1,23 @@
-import { Table,Badge ,ProgressBar } from "react-bootstrap";
+import { useContext } from "react";
+import { Table } from "react-bootstrap";
 import { FaEdit,FaCheckSquare,FaTrash, FaChalkboardTeacher, FaTicketAlt, FaTwitch } from "react-icons/fa";
+import { IssueContext } from "../assets/context/IssueContext";
 import Issue from "./Issue";
 import IssueBar from "./IssueBar"
 
-const Issues =({issues ,totalCount,newCount,progressCount ,completedCount,completedIssue ,deleteIssue})=>{
-    return(
+const Issues =({
+  //issues ,
+  totalCount,
+  newCount,
+  progressCount ,
+  completedCount,
+  completedIssue ,
+  //deleteIssue
+})=>{
+   
+  const {issues} = useContext(IssueContext)
+  //console.log(issues ,'issues') 
+  return(
         <div>
             
    <h3>All Issues...</h3>
@@ -30,7 +43,8 @@ const Issues =({issues ,totalCount,newCount,progressCount ,completedCount,comple
       </thead>
       <tbody>
         
-    {issues.map(issue =><Issue key={issue.id} issue={issue} completedIssue={completedIssue} deleteIssue={deleteIssue}/>)} 
+    {issues.map(issue =><Issue key={issue.id}
+     issue={issue} completedIssue={completedIssue} />)} 
    
        
       </tbody>

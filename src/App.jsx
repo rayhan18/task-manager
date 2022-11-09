@@ -34,24 +34,24 @@ function App() {
   const [progressCount,setProgressCount] = useState(0)
   const [completedCount,setCompletedCount] = useState(0)
 
-
-  const addIssue=(issue)=>{
+ //NOW COME TO CONTEXT API DATA 
+  // const addIssue=(issue)=>{
     
-     setIssue([...issues ,issue])
-     //console.log(issue)
-     if(issue.status === 'new'){
-      setNewCount(prevValue=>prevValue + 1)
-     }
-     if(issue.status === 'inProgress'){
-      setProgressCount(prevValue =>prevValue + 1)
-     }
-     if(issue.status === 'completed'){
-      setCompletedCount(prevValue =>prevValue + 1)
-     }
-     if(issues.status === 'new'){
-      setTotalCount(prevValue=>prevValue + 1)
-     }
-  }
+  //    setIssue([...issues ,issue])
+  //    //console.log(issue)
+  //    if(issue.status === 'new'){
+  //     setNewCount(prevValue=>prevValue + 1)
+  //    }
+  //    if(issue.status === 'inProgress'){
+  //     setProgressCount(prevValue =>prevValue + 1)
+  //    }
+  //    if(issue.status === 'completed'){
+  //     setCompletedCount(prevValue =>prevValue + 1)
+  //    }
+  //    if(issues.status === 'new'){
+  //     setTotalCount(prevValue=>prevValue + 1)
+  //    }
+  // }
   //editIssue n update 
   const upDateIssue=(issueUpdate)=>{
    console.log(issueUpdate ,'update')
@@ -101,9 +101,11 @@ const completedIssue =(id)=>{
         <Container>
           <Routes>
           <Route path="/"  element={ <Homepage/>}/>
-            <Route path="/add" element={ <AddIssue addIssue={addIssue}/>}/>
+            <Route path="/add" element={ <AddIssue />}/>
             <Route path="/edit/:id" element={ <EditIssue issues={issues} upDateIssue={upDateIssue} />}/>
-            <Route path= "/issue" element={<Issues issues={issues}
+            <Route path= "/issue" element={<Issues
+            //now data come to context api (issues data  )
+           // issues={issues}
             totalCount={totalCount}
             newCount={newCount} 
             progressCount={progressCount}
